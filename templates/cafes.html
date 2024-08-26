@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Restaurants{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <h1>All Cafes</h1>
+
+	  <table class="table table-striped table-hover">
+          <thead>
+
+          {% if cafes %}
+          <tr>
+                <th scope="col">Cafe Name</th>
+                <th scope="col">Location</th>
+                <th scope="col">Coffee</th>
+                <th scope="col">Wifi</th>
+                <th scope="col">Power</th>
+            </tr>
+          {% else %}
+          <p>There is no cafe in the list</p>
+          {% endif %}
+          </thead>
+          <tbody>
+          {% for cafe in cafes %}
+            <tr>
+                <td>
+                    {{cafe.name}}
+                </td>
+                <td>
+                    <a href="{{cafe.location}}">Maps link</a>
+                </td>
+                <td>
+                    {{cafe.rating}}
+                </td>
+                <td>
+                    {{cafe.wifi}}
+                </td>
+                <td>
+                    {{cafe.power}}
+                </td>
+                <td>
+                    <form action="{{ url_for('delete_cafe', cafe_id=cafe.id) }}" method="post" onsubmit="return confirmDelete()">
+                        {{ delete_form.hidden_tag() }}
+                        {{ delete_form.submit() }}
+                    </form>
+                </td>
+                <td>
+                    <a href="{{url_for('edit', cafe_id=cafe.id)}}">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+
+        <p><a href="{{url_for('add_cafe')}}">Add cafe</a></p>
+        <p><a href="{{url_for('home')}}">Return to index page</a></p>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
